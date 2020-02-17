@@ -5,16 +5,46 @@ const fs=require('fs');
 function requestHandler(req,res){
     console.log(req.url);
     res.writeHead(200,{'content-type':'text/html'});
-    fs.readFile('./index.html',function(err,data){
+    
+
+    let filepath;
+    switch(req.url){
+        case '/':
+            filepath='./index.html';
+            break;
+            case '/profile':
+                    filepath='./profile.html';
+                    break;
+            default:
+                filepath='./404.html'     ;   
+    }
+
+    fs.readFile(filepath,function(err,data){
         if(err){
-            console.log("error",err);
-            return res.end('<h1>Errpr!</h1>');
+            console.log('error',err);
+            return res.send('<h1>Error!</h1>');
         }
-            return res.end(data);
+        return res.end(data);
+
     })
     
-    // res.end('<h1>gotcha!</h1>');
 }
+
+
+
+
+    
+    // fs.readFile('./index.html',function(err,data){
+    //     if(err){
+    //         console.log("error",err);
+    //         return res.end('<h1>Errpr!</h1>');
+    //     }
+    //         return res.end(data);
+    // })
+    
+    // res.end('<h1>gotcha!</h1>');
+    
+
 
 
 const server =http.createServer(requestHandler);
